@@ -15,6 +15,7 @@ class DerivativeResponse(BaseModel):
     original_expression: str
     derivative_expression: str
     derivative_latex: str
+    expression_latex: str
     variable: str
     order: int
 
@@ -23,7 +24,7 @@ def calculate_derivative(request: DerivativeRequest):
     try:
         # Parse the expression
         # expr = sympify(request.expression)
-        expr = request.expression
+        expr = sympify(request.expression)
         var = symbols(request.variable)
 
         # Calculate the derivative
@@ -33,6 +34,7 @@ def calculate_derivative(request: DerivativeRequest):
             original_expression=str(expr),
             derivative_expression=str(derivative),
             derivative_latex=latex(derivative),
+            expression_latex=latex(expr),
             variable=request.variable,
             order=request.order
         )

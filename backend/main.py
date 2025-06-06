@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import dervatives
+# from routers import integrals
 from typing import List
 
 app = FastAPI()
@@ -19,6 +20,7 @@ app.add_middleware(
 )
 
 app.include_router(dervatives.router, prefix="/calculus", tags=["derivatives, integrals"])
+# app.include_router(integrals.router, prefix="/calculus", tags=["derivatives, integrals"])
 
 @app.get("/")
 def read_root():
