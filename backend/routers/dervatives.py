@@ -42,10 +42,3 @@ def calculate_derivative(request: DerivativeRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error processing expression: {e}")
     
-@router.get("/examples")
-def get_examples():
-    return {
-        "basic": ["x**2", "3*x + 1", "sin(x)", "exp(x)"],
-        "intermediate": ["x**2 * sin(x)", "log(x**2 + 1)", "x**3 * exp(x)"],
-        "advanced": ["sin(x**2)", "x**(1/2)", "tan(x)/x"]
-    }
