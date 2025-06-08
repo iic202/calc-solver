@@ -11,26 +11,28 @@ function IntegralSolver() {
     const [result, setResult] = useState("");
     const [latexResult, setLatexResult] = useState("");
     const [expressionLatex, setExpressionLatex] = useState("");
+    const [value, setValue] = useState("");
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-
-            const lowerBoundValue = lowerBound.trim() === "" ? null : lowerBound
+            // Process lower and upper bounds
+            const lowerBoundValue = lowerBound.trim() === "" ? null : lowerBound;
             const upperBoundValue = upperBound.trim() === "" ? null : upperBound;
-
+            
             const response = await api.post("/calculus/integral", { 
                 expression: expression,
                 variable: variable,
                 lower_bound: lowerBoundValue,
                 upper_bound: upperBoundValue
             });
-            console.log("Request Data: ", {
-                expression, variable, lower_bound: lowerBound, upper_bound: upperBound});
-
+            
+            console.log("Response received:", response.data);
+            
             setResult(response.data.integral_expression);
             setLatexResult(response.data.integral_latex);
             setExpressionLatex(response.data.expression_latex);
+            setValue(response.data.value);
         } catch (error) {
             console.error("Error calculating integral:", error);
             setResult("Error calculating integral");
@@ -105,7 +107,7 @@ function IntegralSolver() {
                     <div className="form-group">
                         <div className="latex-result">
                             {upperBound && lowerBound ? (
-                                <BlockMath math={`\\int_{${lowerBound}}^{${upperBound}} ${expressionLatex} \\, d${variable} = ${latexResult}`} />
+                                <BlockMath math={`\\int_{${lowerBound}}^{${upperBound}} ${expressionLatex} \\, d${variable} = ${latexResult} = ${value}`} />
                             ) : (
                                 <BlockMath math={`\\int ${expressionLatex} \\, d${variable} = ${latexResult} + C`} />
                             )}

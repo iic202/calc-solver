@@ -38,6 +38,15 @@ function App() {
       </div>
       
       {renderCalculator()}
+
+      <div className="footer">
+        <p>
+          © {new Date().getFullYear()} Math Solver. 
+          <a href="https://github.com/iic202" target="_blank" rel="noopener noreferrer" style={{ marginLeft: '5px' }}>
+            GitHub
+          </a>
+        </p>
+      </div>
     </div>
   )
 }

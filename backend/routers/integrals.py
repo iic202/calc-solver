@@ -5,46 +5,51 @@ from sympy import symbols, integrate, latex, sympify
 
 router = APIRouter()
 
-class IntergralRequest(BaseModel):
-    function: str
+class IntegralRequest(BaseModel):
+    expression: str
     variable: str
-    lower_limit: Optional[float] = None
-    upper_limit: Optional[float] = None
+    lower_bound: Optional[str] = None
+    upper_bound: Optional[str] = None
 
-class IntergralRespones(BaseModel):
-    original_function: str
+class IntegralResponse(BaseModel):
+    original_expression: str
     integral_expression: str
     integral_latex: str
-    function_latex: str
+    expression_latex: str
     variable: str
-    lower_limit: Optional[float] = None
-    upper_limit: Optional[float] = None
+    definite: bool = False
+    value: Optional[str] = None
 
 
-@router.post("/integral", response_model=IntergralRespones)
-def calculate_integral(request: IntergralRequest):
+@router.post("/integral", response_model=IntegralResponse)
+def calculate_integral(request: IntegralRequest):
     try:
-        # Parse the function and variable
-        func = sympify(request.function)
-        print(f"Parsed function: {func}")
+        expr = sympify(request.expression)
         var = symbols(request.variable)
-        print(f"Parsed variable: {var}")
-        print(f"Lower limit: {request.lower_limit}, Upper limit: {request.upper_limit}")
-
-        # Calculate the integral and check if limits are in request.
-        if request.lower_limit is not None and request.upper_limit is not None:
-            integral = integrate(func, (var, request.lower_limit, request.upper_limit))
-        else:
-            integral = integrate(func, var)
-
-        return IntergralRespones(
-            original_function=str(func),
-            integral_expression=str(integral),
-            integral_latex=latex(integral),
-            function_latex=latex(func),
+        
+        indefinite_integral = integrate(expr, var)
+        
+        is_definite = request.lower_bound is not None and request.upper_bound is not None
+        result_value = None
+        
+        if is_definite:
+            try:
+                lower = sympify(request.lower_bound)
+                upper = sympify(request.upper_bound)
+                
+                definite_result = integrate(expr, (var, lower, upper))
+                result_value = str(definite_result)
+            except Exception as e:
+                raise HTTPException(status_code=400, detail=f"Error calculating definite integral: {e}")
+        
+        return IntegralResponse(
+            original_expression=str(expr),
+            integral_expression=str(indefinite_integral),
+            integral_latex=latex(indefinite_integral),
+            expression_latex=latex(expr),
             variable=request.variable,
-            lower_limit=request.lower_limit,
-            upper_limit=request.upper_limit
+            definite=is_definite,
+            value=result_value
         )
     
     except Exception as e:
