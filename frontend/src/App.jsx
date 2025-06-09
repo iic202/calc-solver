@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import DerivativeSolver from './components/DerivativeSolver'
 import IntegralSolver from './components/IntegralSolver'
+import LimitSolver from './components/LimitSolver'
 
 function App() {
   const [activeCalculator, setActiveCalculator] = useState('derivative');
@@ -12,6 +13,8 @@ function App() {
         return <DerivativeSolver />;
       case 'integral':
         return <IntegralSolver />;
+      case 'limit':
+        return <LimitSolver />;
       default:
         return <DerivativeSolver />;
     }
@@ -33,6 +36,13 @@ function App() {
             onClick={() => setActiveCalculator('integral')}
           >
             Integral Solver
+          </button>
+
+          <button 
+            className={`tab-btn ${activeCalculator === 'limit' ? 'active' : ''}`}
+            onClick={() => setActiveCalculator('limit')}
+          >
+            Limit Solver
           </button>
         </div>
       </div>

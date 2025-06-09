@@ -16,7 +16,6 @@ function IntegralSolver() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            // Process lower and upper bounds
             const lowerBoundValue = lowerBound.trim() === "" ? null : lowerBound;
             const upperBoundValue = upperBound.trim() === "" ? null : upperBound;
             
