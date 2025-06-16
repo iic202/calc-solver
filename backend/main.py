@@ -3,10 +3,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import dervatives
 from routers import integrals
-from typing import List
+from routers import limits
 
 app = FastAPI()
 
+# Since I am running the front end using Vite on port 5173
 origins = [
     "http://localhost:5173"
 ]
@@ -21,6 +22,7 @@ app.add_middleware(
 
 app.include_router(dervatives.router, prefix="/calculus", tags=["derivatives"])
 app.include_router(integrals.router, prefix="/calculus", tags=["integrals"])
+app.include_router(limits.router, prefix="/calculus", tags=["limits"])
 
 @app.get("/")
 def read_root():
