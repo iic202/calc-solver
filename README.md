@@ -131,12 +131,9 @@ calc-solver/
 │   ├── main.py              # FastAPI application entry point
 │   ├── requirements.txt     # Python dependencies
 │   ├── routers/
-│   │   ├── __init__.py
-│   │   ├── derivatives.py   # Derivative calculation endpoints
-│   │   └── integrals.py     # Integral calculation endpoints
-│   └── utils/
-│       ├── __init__.py
-│       └── latex_parser.py  # LaTeX expression parsing utility
+│      ├── __init__.py
+│      ├── derivatives.py   # Derivative calculation endpoints
+│      └── integrals.py     # Integral calculation endpoints
 ├── frontend/
 │   ├── src/
 │   │   ├── components/      # Reusable React components
